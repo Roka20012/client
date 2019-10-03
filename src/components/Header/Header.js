@@ -5,17 +5,15 @@ import {
     AppBar,
     Toolbar,
     Typography,
-    Button,
-    IconButton
+    Button
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 const useStyles = theme => ({
     root: {
+        margin: 0,
+        padding: 0,
         flexGrow: 1
-    },
-    menuButton: {
-        marginRight: theme.spacing(2)
     },
     title: {
         flexGrow: 1
@@ -26,24 +24,19 @@ class Header extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <div className={classes.root}>
-                <AppBar position="static">
-                    <Toolbar>
-                        <IconButton
-                            edge="start"
-                            className={classes.menuButton}
-                            color="inherit"
-                            aria-label="menu"
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" className={classes.title}>
-                            News
-                        </Typography>
-                        <Button color="inherit">Login</Button>
-                    </Toolbar>
-                </AppBar>
-            </div>
+            <CssBaseline>
+                <div className={classes.root}>
+                    <AppBar position="static">
+                        <Toolbar>
+                            <Typography variant="h6" className={classes.title}>
+                                Notes App
+                            </Typography>
+                            <Button color="inherit">Sign Up</Button>
+                            <Button color="inherit">Sign In</Button>
+                        </Toolbar>
+                    </AppBar>
+                </div>
+            </CssBaseline>
         );
     }
 }
