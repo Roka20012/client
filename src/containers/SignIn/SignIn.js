@@ -1,6 +1,5 @@
 import React from "react";
-
-import Copyright from '../../components/Copyright';
+import { NavLink } from "react-router-dom";
 
 import {
     Avatar,
@@ -16,6 +15,7 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
+import Copyright from "../../components/Copyright";
 
 const useStyles = theme => ({
     "@global": {
@@ -24,7 +24,7 @@ const useStyles = theme => ({
         }
     },
     paper: {
-        marginTop: theme.spacing(25),
+        marginTop: theme.spacing(8),
         display: "flex",
         flexDirection: "column",
         alignItems: "center"
@@ -61,10 +61,10 @@ class SignIn extends React.Component {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
                             autoFocus
                         />
                         <TextField
@@ -88,11 +88,18 @@ class SignIn extends React.Component {
                             Sign In
                         </Button>
                         <Grid container>
-                            <Grid item xs>
-                            </Grid>
+                            <Grid item xs></Grid>
                             <Grid item>
                                 <Link href="#" variant="body2">
-                                    {"Don't have an account? Sign Up"}
+                                    <NavLink
+                                        to="/signup"
+                                        activeClassName="selected"
+                                        style={{
+                                            textDecoration: "none"
+                                        }}
+                                    >
+                                        Don't have an account? Sign Up
+                                    </NavLink>
                                 </Link>
                             </Grid>
                         </Grid>

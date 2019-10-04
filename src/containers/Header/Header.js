@@ -1,5 +1,7 @@
 import React from "react";
 
+import { NavLink } from "react-router-dom";
+
 import {
     withStyles,
     AppBar,
@@ -17,6 +19,9 @@ const useStyles = theme => ({
     },
     title: {
         flexGrow: 1
+    },
+    submit: {
+        margin: theme.spacing(1, .5, 1)
     }
 });
 
@@ -31,8 +36,50 @@ class Header extends React.Component {
                             <Typography variant="h6" className={classes.title}>
                                 Notes App
                             </Typography>
-                            <Button color="inherit">Sign Up</Button>
-                            <Button color="inherit">Sign In</Button>
+
+                            <NavLink
+                                to="/signup"
+                                activeClassName="selected"
+                                activeStyle={{
+                                    fontWeight: "bold",
+                                    color: "white"
+                                }}
+                                className={classes.submit}
+                                style={{
+                                    textDecoration: "none",
+                                    color: "#b0bec5"
+                                }}
+                            >
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="secondary"
+                                >
+                                    Sign Up
+                                </Button>
+                            </NavLink>
+
+                            <NavLink
+                                to="/signin"
+                                activeClassName="selected"
+                                className={classes.submit}
+                                activeStyle={{
+                                    fontWeight: "bold",
+                                    color: "white"
+                                }}
+                                style={{
+                                    textDecoration: "none",
+                                    color: "#b0bec5"
+                                }}
+                            >
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="secondary"
+                                >
+                                    Sign In
+                                </Button>
+                            </NavLink>
                         </Toolbar>
                     </AppBar>
                 </div>

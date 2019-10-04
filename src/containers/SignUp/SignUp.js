@@ -1,6 +1,6 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
-import Copyright from "../../components//Copyright";
 import {
     Avatar,
     Button,
@@ -14,6 +14,8 @@ import {
     withStyles
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+
+import Copyright from "../../components//Copyright";
 
 const useStyles = theme => ({
     "@global": {
@@ -83,10 +85,11 @@ class SignUp extends React.Component {
                                     variant="outlined"
                                     required
                                     fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
+                                    name="username"
+                                    label="username"
+                                    type="username"
+                                    id="username"
+                                    autoComplete="current-password"
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -126,7 +129,15 @@ class SignUp extends React.Component {
                         <Grid container justify="flex-end">
                             <Grid item>
                                 <Link href="#" variant="body2">
-                                    Already have an account? Sign in
+                                    <NavLink
+                                        to="/signin"
+                                        activeClassName="selected"
+                                        style={{
+                                            textDecoration: "none"
+                                        }}
+                                    >
+                                        Already have an account? Sign in
+                                    </NavLink>
                                 </Link>
                             </Grid>
                         </Grid>
