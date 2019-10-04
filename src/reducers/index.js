@@ -1,5 +1,3 @@
-import {combineReducer} from "react-redux";
+import { combineReducers } from "redux";
 
-export default combineReducer({
-    
-});
+export default combineReducers({});

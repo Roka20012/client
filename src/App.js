@@ -1,15 +1,25 @@
 import React from "react";
+import { Provider } from "react-redux";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import "typeface-roboto";
 
-import Header from "./components/Header";
-import SignIn from "./components/SignIn";
+import configureStore from "./store/configureStore";
+
+import MainPage from "./components/MainPage";
+
 import "./App.css";
+
+const store = configureStore();
 
 function App() {
     return (
-        <>
-            <Header />
-            <SignIn />
-        </>
+        <Provider store={store}>
+            <Router>
+                <div>
+                    <Route path="/" exact component={MainPage} />
+                </div>
+            </Router>
+        </Provider>
     );
 }
 
