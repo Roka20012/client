@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import {
@@ -6,7 +7,6 @@ import {
     Button,
     CssBaseline,
     TextField,
-    Link,
     Grid,
     Box,
     Typography,
@@ -16,6 +16,7 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 import Copyright from "../../components/Copyright";
+import { userLogin } from "../../actions/auth";
 
 const useStyles = theme => ({
     "@global": {
@@ -43,6 +44,24 @@ const useStyles = theme => ({
 });
 
 class SignIn extends React.Component {
+    username = React.createRef();
+    password = React.createRef();
+
+    login = e => {
+        e.preventDefault();
+        const username = this.username.current.value;
+        const password = this.password.current.value;
+        const body = {
+            username,
+            password,
+            headers: {
+                Authorization:
+                    "eyJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1ZDk5YzQ3ZWQwNWEyZTI4NGMyODBlYWQiLCJ1c2VybmFtZSI6IlBldHJvMjMiLCJ1c2VyIjp7Il9pZCI6IjVkOTljNDdlZDA1YTJlMjg0YzI4MGVhZCIsInVzZXJuYW1lIjoiUGV0cm8yMyIsInBhc3N3b3JkIjoiJDJhJDEwJE1yWHhiNGE0UXhSYmhjSm1tNW1sci5KL1dxZXhXcWFnQlV5Y2Z2bjh6dTNnVGwyRDAzem1TIiwiX192IjowfX0.KPIc0IcImBogOPFaqz6N9yuce-wIG8cFlPcpRbp4A2E"
+            }
+        };
+        this.props.signIn("http://localhost:5000/api/auth/login", body);
+    };
+
     render() {
         const { classes } = this.props;
         return (
@@ -55,7 +74,11 @@ class SignIn extends React.Component {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <form className={classes.form} noValidate>
+                    <form
+                        className={classes.form}
+                        noValidate
+                        onSubmit={this.login}
+                    >
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -66,6 +89,7 @@ class SignIn extends React.Component {
                             name="username"
                             autoComplete="username"
                             autoFocus
+                            inputRef={this.username}
                         />
                         <TextField
                             variant="outlined"
@@ -77,6 +101,7 @@ class SignIn extends React.Component {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            inputRef={this.password}
                         />
                         <Button
                             type="submit"
@@ -90,17 +115,15 @@ class SignIn extends React.Component {
                         <Grid container>
                             <Grid item xs></Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
-                                    <NavLink
-                                        to="/signup"
-                                        activeClassName="selected"
-                                        style={{
-                                            textDecoration: "none"
-                                        }}
-                                    >
-                                        Don't have an account? Sign Up
-                                    </NavLink>
-                                </Link>
+                                <NavLink
+                                    to="/signup"
+                                    activeClassName="selected"
+                                    style={{
+                                        textDecoration: "none"
+                                    }}
+                                >
+                                    Don't have an account? Sign Up
+                                </NavLink>
                             </Grid>
                         </Grid>
                     </form>
@@ -113,4 +136,15 @@ class SignIn extends React.Component {
     }
 }
 
-export default withStyles(useStyles)(SignIn);
+const mapStateToProps = ({ token }) => ({
+    token
+});
+
+const mapDispatchToProps = dispatch => ({
+    signIn: (url, body) => dispatch(userLogin(url, body))
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withStyles(useStyles)(SignIn));

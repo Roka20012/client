@@ -1,3 +1,10 @@
 import { combineReducers } from "redux";
 
-export default combineReducers({});
+import { notes } from "./notes";
+import { userLogin, userRegister } from "./auth";
+
+export default combineReducers({
+    notes,
+    token: userLogin,
+    user: userRegister
+});

@@ -1,11 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
-import {
-    BrowserRouter as Router,
-    Route,
-    Switch,
-    Redirect
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "typeface-roboto";
 
 import configureStore from "./store/configureStore";

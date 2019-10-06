@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import {
@@ -6,7 +7,6 @@ import {
     Button,
     CssBaseline,
     TextField,
-    Link,
     Grid,
     Box,
     Typography,
@@ -16,6 +16,8 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 import Copyright from "../../components//Copyright";
+
+import { userRegister } from "../../actions/auth";
 
 const useStyles = theme => ({
     "@global": {
@@ -43,6 +45,23 @@ const useStyles = theme => ({
 });
 
 class SignUp extends React.Component {
+    username = React.createRef();
+    password = React.createRef();
+    confirmation = React.createRef();
+
+    register = e => {
+        e.preventDefault();
+        const username = this.username.current.value;
+        const password = this.password.current.value;
+        const confirmation = this.confirmation.current.value;
+
+        const body = {
+            username,
+            password,
+            confirmation
+        };
+        this.props.signUp("http://localhost:5000/api/auth/register", body);
+    };
     render() {
         const { classes } = this.props;
         return (
@@ -55,41 +74,23 @@ class SignUp extends React.Component {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <form className={classes.form} noValidate>
+                    <form
+                        className={classes.form}
+                        noValidate
+                        onSubmit={this.register}
+                    >
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    autoComplete="fname"
-                                    name="firstName"
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    id="firstName"
-                                    label="First Name"
-                                    autoFocus
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    id="lastName"
-                                    label="Last Name"
-                                    name="lastName"
-                                    autoComplete="lname"
-                                />
-                            </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     variant="outlined"
                                     required
                                     fullWidth
                                     name="username"
-                                    label="username"
+                                    label="Username"
                                     type="username"
                                     id="username"
-                                    autoComplete="current-password"
+                                    autoComplete="current-username"
+                                    inputRef={this.username}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -102,6 +103,7 @@ class SignUp extends React.Component {
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
+                                    inputRef={this.password}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -114,6 +116,7 @@ class SignUp extends React.Component {
                                     type="password"
                                     id="password-confirmation"
                                     autoComplete="current-password-confirmation"
+                                    inputRef={this.confirmation}
                                 />
                             </Grid>
                         </Grid>
@@ -128,17 +131,15 @@ class SignUp extends React.Component {
                         </Button>
                         <Grid container justify="flex-end">
                             <Grid item>
-                                <Link href="#" variant="body2">
-                                    <NavLink
-                                        to="/signin"
-                                        activeClassName="selected"
-                                        style={{
-                                            textDecoration: "none"
-                                        }}
-                                    >
-                                        Already have an account? Sign in
-                                    </NavLink>
-                                </Link>
+                                <NavLink
+                                    to="/signin"
+                                    activeClassName="selected"
+                                    style={{
+                                        textDecoration: "none"
+                                    }}
+                                >
+                                    Already have an account? Sign in
+                                </NavLink>
                             </Grid>
                         </Grid>
                     </form>
@@ -151,4 +152,11 @@ class SignUp extends React.Component {
     }
 }
 
-export default withStyles(useStyles)(SignUp);
+const mapDispatchToProps = dispatch => ({
+    signUp: (url, body) => dispatch(userRegister(url, body))
+});
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(withStyles(useStyles)(SignUp));
