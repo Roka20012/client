@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
+import { Field, reduxForm } from "redux-form";
 
 import {
     Avatar,
@@ -43,11 +44,44 @@ const useStyles = theme => ({
     }
 });
 
+const validate = values => {
+    const errors = {};
+    const requiredFields = ["name", "password"];
+    requiredFields.forEach(field => {
+        if (!values[field]) errors[field] = "Required";
+    });
+    return errors;
+};
+
+const renderTextField = ({
+    label,
+    input,
+    meta: { touched, invalid, error },
+    ...custom
+}) => (
+    <TextField
+        label={label}
+        placeholder={label}
+        error={touched && invalid}
+        helperText={touched && error}
+        {...input}
+        {...custom}
+    />
+);
+
 class SignIn extends React.Component {
     username = React.createRef();
     password = React.createRef();
+    state = {
+        name: ""
+    };
+    onInput = ({ target: { value } }) => {
+        this.setState({
+            name: value
+        });
+    };
 
-    login = e => {
+    login = async e => {
         e.preventDefault();
         const username = this.username.current.value;
         const password = this.password.current.value;
@@ -55,11 +89,11 @@ class SignIn extends React.Component {
             username,
             password,
             headers: {
-                Authorization:
-                    "eyJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1ZDk5YzQ3ZWQwNWEyZTI4NGMyODBlYWQiLCJ1c2VybmFtZSI6IlBldHJvMjMiLCJ1c2VyIjp7Il9pZCI6IjVkOTljNDdlZDA1YTJlMjg0YzI4MGVhZCIsInVzZXJuYW1lIjoiUGV0cm8yMyIsInBhc3N3b3JkIjoiJDJhJDEwJE1yWHhiNGE0UXhSYmhjSm1tNW1sci5KL1dxZXhXcWFnQlV5Y2Z2bjh6dTNnVGwyRDAzem1TIiwiX192IjowfX0.KPIc0IcImBogOPFaqz6N9yuce-wIG8cFlPcpRbp4A2E"
+                Authorization: localStorage.getItem("TOKEN")
             }
         };
-        this.props.signIn("http://localhost:5000/api/auth/login", body);
+        await this.props.signIn("http://localhost:5000/api/auth/login", body);
+        this.props.history.push("/app");
     };
 
     render() {
@@ -144,7 +178,14 @@ const mapDispatchToProps = dispatch => ({
     signIn: (url, body) => dispatch(userLogin(url, body))
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withStyles(useStyles)(SignIn));
+export default reduxForm({
+    form: "MaterialUiForm", // a unique identifier for this form
+    validate
+})(
+    withRouter(
+        connect(
+            mapStateToProps,
+            mapDispatchToProps
+        )(withStyles(useStyles)(SignIn))
+    )
+);

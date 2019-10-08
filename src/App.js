@@ -8,11 +8,17 @@ import configureStore from "./store/configureStore";
 import Header from "./containers/Header";
 import SignUp from "./containers/SignUp";
 import SignIn from "./containers/SignIn";
+import ProfileHeader from "./containers/ProfileHeader";
 import Page404 from "./components/Page404";
+import ProtectedRoute from "./protected.route";
 
 import "./App.css";
 
 const store = configureStore();
+store.subscribe = () => {
+    console.log(store.getState());
+    localStorage.removeItem("TOKEN");
+};
 
 function App() {
     return (
@@ -22,6 +28,7 @@ function App() {
                     <Switch>
                         <Route
                             path="/signin"
+                            exact
                             render={props => (
                                 <>
                                     <Header />
@@ -38,8 +45,13 @@ function App() {
                                 </>
                             )}
                         />
+                        <ProtectedRoute
+                            exact
+                            path="/app"
+                            component={ProfileHeader}
+                        />
 
-                        <Route component={Page404} />
+                        <Route path="*" component={Page404} />
                     </Switch>
                 </div>
             </Router>

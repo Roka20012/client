@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 
 import {
     Avatar,
@@ -49,7 +49,7 @@ class SignUp extends React.Component {
     password = React.createRef();
     confirmation = React.createRef();
 
-    register = e => {
+    register = async e => {
         e.preventDefault();
         const username = this.username.current.value;
         const password = this.password.current.value;
@@ -60,7 +60,8 @@ class SignUp extends React.Component {
             password,
             confirmation
         };
-        this.props.signUp("http://localhost:5000/api/auth/register", body);
+        await this.props.signUp("http://localhost:5000/api/auth/register", body);
+        this.props.history.push("/signin");
     };
     render() {
         const { classes } = this.props;
@@ -156,7 +157,9 @@ const mapDispatchToProps = dispatch => ({
     signUp: (url, body) => dispatch(userRegister(url, body))
 });
 
-export default connect(
-    null,
-    mapDispatchToProps
-)(withStyles(useStyles)(SignUp));
+export default withRouter(
+    connect(
+        null,
+        mapDispatchToProps
+    )(withStyles(useStyles)(SignUp))
+);
