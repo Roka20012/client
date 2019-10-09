@@ -11,14 +11,11 @@ import SignIn from "./containers/SignIn";
 import ProfileHeader from "./containers/ProfileHeader";
 import Page404 from "./components/Page404";
 import ProtectedRoute from "./protected.route";
+import Notes from "./containers/Notes";
 
 import "./App.css";
 
 const store = configureStore();
-store.subscribe = () => {
-    console.log(store.getState());
-    localStorage.removeItem("TOKEN");
-};
 
 function App() {
     return (
@@ -46,12 +43,18 @@ function App() {
                             )}
                         />
                         <ProtectedRoute
-                            exact
                             path="/app"
-                            component={ProfileHeader}
+                            component={props => (
+                                <>
+                                    <ProfileHeader />
+                                    <Notes />
+                                </>
+                            )}
                         />
 
-                        <Route path="*" component={Page404} />
+                        <Route path="*">
+                            <Page404 />
+                        </Route>
                     </Switch>
                 </div>
             </Router>

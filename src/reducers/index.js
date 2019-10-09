@@ -4,7 +4,7 @@ import { notes } from "./notes";
 import { userLogin, userRegister } from "./auth";
 
 export default combineReducers({
-    notes,
+    userNotes: notes,
     token: userLogin,
     user: userRegister
 });

@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { NavLink, withRouter } from "react-router-dom";
-import { Field, reduxForm } from "redux-form";
 
 import {
     Avatar,
@@ -43,31 +42,6 @@ const useStyles = theme => ({
         margin: theme.spacing(3, 0, 2)
     }
 });
-
-const validate = values => {
-    const errors = {};
-    const requiredFields = ["name", "password"];
-    requiredFields.forEach(field => {
-        if (!values[field]) errors[field] = "Required";
-    });
-    return errors;
-};
-
-const renderTextField = ({
-    label,
-    input,
-    meta: { touched, invalid, error },
-    ...custom
-}) => (
-    <TextField
-        label={label}
-        placeholder={label}
-        error={touched && invalid}
-        helperText={touched && error}
-        {...input}
-        {...custom}
-    />
-);
 
 class SignIn extends React.Component {
     username = React.createRef();
@@ -178,14 +152,9 @@ const mapDispatchToProps = dispatch => ({
     signIn: (url, body) => dispatch(userLogin(url, body))
 });
 
-export default reduxForm({
-    form: "MaterialUiForm", // a unique identifier for this form
-    validate
-})(
-    withRouter(
-        connect(
-            mapStateToProps,
-            mapDispatchToProps
-        )(withStyles(useStyles)(SignIn))
-    )
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(withStyles(useStyles)(SignIn))
 );
