@@ -12,3 +12,5 @@ export const GET_USER_NOTE = "GET_USER_NOTE";
 export const GET_USER_NOTES = "GET_USER_NOTES";
 export const UPDATE_USER_NOTE = "UPDATE_USER_NOTE";
 export const CREATE_USER_NOTE = "CREATE_USER_NOTE";
+
+export const LOADED = "LOADED";

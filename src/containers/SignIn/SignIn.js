@@ -46,14 +46,6 @@ const useStyles = theme => ({
 class SignIn extends React.Component {
     username = React.createRef();
     password = React.createRef();
-    state = {
-        name: ""
-    };
-    onInput = ({ target: { value } }) => {
-        this.setState({
-            name: value
-        });
-    };
 
     login = async e => {
         e.preventDefault();

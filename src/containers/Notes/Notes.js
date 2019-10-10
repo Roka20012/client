@@ -1,26 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-    Tooltip,
-    Card,
-    CardActions,
-    CardContent,
-    CssBaseline,
-    Grid,
-    Typography,
-    Container,
-    IconButton,
-    Zoom
-} from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
+import { CssBaseline, Grid, Typography, Container } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import Copyright from "../../components/Copyright";
+import Note from "./Note";
+import { deleteNote } from "../../actions/notes";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = theme => ({
     cardGrid: {
-        paddingTop: theme.spacing(8),
-        paddingBottom: theme.spacing(8)
+        paddingTop: theme.spacing(5),
+        paddingBottom: theme.spacing(14)
     },
     card: {
         height: "100%",
@@ -28,11 +17,9 @@ const useStyles = theme => ({
         flexDirection: "column"
     },
     cardContent: {
-        flexGrow: 1
-    },
-    footer: {
-        backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(6)
+        flexGrow: 1,
+        display: "flex",
+        margin: theme.spacing(1)
     },
     heroContent: {
         backgroundColor: theme.palette.background.paper,
@@ -50,11 +37,11 @@ const useStyles = theme => ({
     }
 });
 
-// const notes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const loadItem = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 class Notes extends React.Component {
     render() {
-        const { classes, notes } = this.props;
+        const { classes, notes, loaded, deleteNote } = this.props;
 
         return (
             <>
@@ -73,73 +60,41 @@ class Notes extends React.Component {
                 <main>
                     <Container className={classes.cardGrid} maxWidth="md">
                         <Grid container spacing={4}>
-                            {notes.map(
-                                ({ _id: id, text, createDate: date }) => (
-                                    <Grid item key={id} xs={12} sm={6} md={4}>
-                                        <Card className={classes.card}>
-                                            <CardContent
-                                                className={classes.cardContent}
-                                            >
-                                                <Typography>{text}</Typography>
-                                            </CardContent>
-
-                                            <CardActions
-                                                className={classes.buttons}
-                                            >
-                                                <CardContent
-                                                    className={classes.date}
-                                                >
-                                                    <Typography>
-                                                        {new Date(
-                                                            date
-                                                        ).toLocaleDateString()}
-                                                    </Typography>
-                                                </CardContent>
-                                                <Tooltip
-                                                    title="Edit"
-                                                    TransitionComponent={Zoom}
-                                                >
-                                                    <IconButton aria-label="edit">
-                                                        <EditIcon />
-                                                    </IconButton>
-                                                </Tooltip>
-                                                <Tooltip
-                                                    title="Delete"
-                                                    TransitionComponent={Zoom}
-                                                >
-                                                    <IconButton aria-label="delete">
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </CardActions>
-                                        </Card>
-                                    </Grid>
-                                )
-                            )}
+                            {loaded
+                                ? notes.map(note => (
+                                      <Note
+                                          key={note._id}
+                                          deleteNote={() =>
+                                              deleteNote(note._id)
+                                          }
+                                          {...note}
+                                      />
+                                  ))
+                                : loadItem.map((item, id) => (
+                                      <Skeleton
+                                          variant="rect"
+                                          width={210}
+                                          height={148}
+                                          key={id}
+                                          className={classes.cardContent}
+                                      />
+                                  ))}
                         </Grid>
                     </Container>
                 </main>
-                <footer className={classes.footer}>
-                    <Typography
-                        variant="subtitle1"
-                        align="center"
-                        color="textSecondary"
-                        component="p"
-                    >
-                        Notes App
-                    </Typography>
-                    <Copyright />
-                </footer>
             </>
         );
     }
 }
 
-const mapStateToProps = ({ userNotes }) => ({
-    notes: userNotes
+const mapStateToProps = ({ userNotes, loaded }) => ({
+    notes: userNotes,
+    loaded
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+    deleteNote: id => dispatch(deleteNote(id))
+});
 
 export default connect(
     mapStateToProps,

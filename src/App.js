@@ -12,6 +12,7 @@ import ProfileHeader from "./containers/ProfileHeader";
 import Page404 from "./components/Page404";
 import ProtectedRoute from "./protected.route";
 import Notes from "./containers/Notes";
+import BottomAppBar from "./containers/BottomAppBar";
 
 import "./App.css";
 
@@ -48,6 +49,7 @@ function App() {
                                 <>
                                     <ProfileHeader />
                                     <Notes />
+                                    <BottomAppBar />
                                 </>
                             )}
                         />
