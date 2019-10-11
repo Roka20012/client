@@ -15,6 +15,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const useStyles = theme => ({
     card: {
+        position: "relative",
         height: "100%",
         display: "flex",
         flexDirection: "column"
@@ -24,14 +25,13 @@ const useStyles = theme => ({
         wordBreak: "break-all"
     },
     buttons: {
+        flexGrow: 1,
         display: "flex",
         justifyContent: "flex-end"
     },
     date: {
-        display: "flex",
-        justifyContent: "flex-start",
-        width: "100%",
-        marginRight: theme.spacing(5.3)
+        position: "absolute",
+        left: 0
     }
 });
 
@@ -42,7 +42,8 @@ class Note extends React.Component {
             _id: id,
             text,
             createDate: date,
-            deleteNote
+            deleteNote,
+            handleToggleUpdateDialog
         } = this.props;
         return (
             <Grid item key={id} xs={12} sm={6} md={4}>
@@ -59,7 +60,12 @@ class Note extends React.Component {
                             </Typography>
                         </CardContent>
                         <Tooltip title="Edit" TransitionComponent={Zoom}>
-                            <IconButton aria-label="edit">
+                            <IconButton
+                                aria-label="edit"
+                                onClick={() =>
+                                    handleToggleUpdateDialog(id, text)
+                                }
+                            >
                                 <EditIcon />
                             </IconButton>
                         </Tooltip>

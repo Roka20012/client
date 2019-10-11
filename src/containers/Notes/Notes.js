@@ -2,9 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import { CssBaseline, Grid, Typography, Container } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import Note from "./Note";
-import { deleteNote } from "../../actions/notes";
 import Skeleton from "@material-ui/lab/Skeleton";
+import Note from "./Note";
+import { deleteNote, updateNote } from "../../actions/notes";
+import UpdateNoteDialog from "../UpdateNoteDialog";
 
 const useStyles = theme => ({
     cardGrid: {
@@ -37,11 +38,24 @@ const useStyles = theme => ({
     }
 });
 
-const loadItem = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const loadItem = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 class Notes extends React.Component {
+    state = {
+        open: false
+    };
+
+    handleToggleUpdateDialog = (id, text) => {
+        this.setState(({ open }) => ({ open: !open, id, text }));
+    };
+
+    updateNote = async (id, text) => {
+        await this.props.updateNote(id, text);
+        this.handleToggleAddMenu();
+    };
+
     render() {
-        const { classes, notes, loaded, deleteNote } = this.props;
+        const { classes, notes, loaded, deleteNote, updateNote } = this.props;
 
         return (
             <>
@@ -67,13 +81,16 @@ class Notes extends React.Component {
                                           deleteNote={() =>
                                               deleteNote(note._id)
                                           }
+                                          handleToggleUpdateDialog={
+                                              this.handleToggleUpdateDialog
+                                          }
                                           {...note}
                                       />
                                   ))
                                 : loadItem.map((item, id) => (
                                       <Skeleton
                                           variant="rect"
-                                          width={210}
+                                          width={250}
                                           height={148}
                                           key={id}
                                           className={classes.cardContent}
@@ -82,6 +99,16 @@ class Notes extends React.Component {
                         </Grid>
                     </Container>
                 </main>
+                {this.state.open && (
+                    <UpdateNoteDialog
+                        open={this.state.open}
+                        handleToggleUpdateDialog={this.handleToggleUpdateDialog}
+                        updateNote={updateNote}
+                        id={this.state.id}
+                        text={this.state.text}
+                    />
+                )}
+                />
             </>
         );
     }
@@ -93,7 +120,8 @@ const mapStateToProps = ({ userNotes, loaded }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    deleteNote: id => dispatch(deleteNote(id))
+    deleteNote: id => dispatch(deleteNote(id)),
+    updateNote: (id, text) => dispatch(updateNote(id, text))
 });
 
 export default connect(

@@ -3,7 +3,8 @@ import axios from "axios";
 import {
     GET_USER_NOTES,
     CREATE_USER_NOTE,
-    DELETE_USER_NOTE
+    DELETE_USER_NOTE,
+    UPDATE_USER_NOTE
 } from "../constants";
 import { loaded } from "./loaded";
 
@@ -25,6 +26,14 @@ export const deleteNoteSuccess = id => ({
     type: DELETE_USER_NOTE,
     payload: {
         id
+    }
+});
+
+export const updateNoteSuccess = (id, text) => ({
+    type: UPDATE_USER_NOTE,
+    payload: {
+        id,
+        text
     }
 });
 
@@ -67,6 +76,24 @@ export const deleteNote = id => async dispatch => {
         );
         console.log("response is", response);
         dispatch(deleteNoteSuccess(id));
+    } catch (err) {
+        console.log("error", err);
+    }
+};
+
+export const updateNote = (id, text) => async dispatch => {
+    try {
+        const response = await axios.put(
+            `http://localhost:5000/api/notes/${id}`,
+            { text },
+            {
+                headers: {
+                    Authorization: localStorage.getItem("TOKEN")
+                }
+            }
+        );
+        console.log("response is", response);
+        dispatch(updateNoteSuccess(id, text));
     } catch (err) {
         console.log("error", err);
     }
