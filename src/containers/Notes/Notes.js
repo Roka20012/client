@@ -1,7 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import { CssBaseline, Grid, Typography, Container } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import {
+    CssBaseline,
+    Grid,
+    Typography,
+    Container,
+    CircularProgress,
+    withStyles
+} from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Note from "./Note";
 import { deleteNote, updateNote } from "../../actions/notes";
@@ -68,7 +74,11 @@ class Notes extends React.Component {
                         color="textPrimary"
                         gutterBottom
                     >
-                        My Notes
+                        You have{" "}
+                        {(loaded && notes.length) || (
+                            <CircularProgress className={classes.progress} />
+                        )}{" "}
+                        notes
                     </Typography>
                 </Container>
                 <main>
