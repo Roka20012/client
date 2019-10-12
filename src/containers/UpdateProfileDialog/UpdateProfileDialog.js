@@ -9,42 +9,42 @@ import {
     Button
 } from "@material-ui/core";
 
-class UpdateNoteDialog extends React.Component {
+class UpdateProfileDialog extends React.Component {
     state = {
-        noteText: this.props.text
+        username: this.props.username
     };
 
-    handleInput = ({ target: { value: noteText } }) => {
+    handleInput = ({ target: { value: username } }) => {
         this.setState({
-            noteText
+            username
         });
     };
 
     componentDidMount() {
         this.setState({
-            noteText: this.props.text
+            username: this.props.username
         });
     }
 
     render() {
-        const { open, handleToggleUpdateDialog, updateNote, id } = this.props;
+        const { open, handleToggleUpdateDialog, updateProfile } = this.props;
         return (
             <Dialog
                 onClose={handleToggleUpdateDialog}
                 open={open}
                 aria-labelledby="form-dialog-title"
             >
-                <DialogTitle id="form-dialog-title">Update Note</DialogTitle>
+                <DialogTitle id="form-dialog-title">Update Profile</DialogTitle>
 
                 <DialogContent>
                     <DialogContentText>
-                        To update Note please fill this field and then press
-                        UPDATE
+                        To update Profile username please fill this field and
+                        then press UPDATE
                     </DialogContentText>
                     <form
-                        onSubmit={e => {
+                        onSubmit={async e => {
                             e.preventDefault();
-                            updateNote(id, this.state.noteText);
+                            await updateProfile(this.state.username);
                             handleToggleUpdateDialog();
                         }}
                     >
@@ -52,10 +52,10 @@ class UpdateNoteDialog extends React.Component {
                             autoFocus
                             margin="dense"
                             id="note"
-                            label="Note"
+                            label="Username"
                             type="text"
                             fullWidth
-                            value={this.state.noteText}
+                            value={this.state.username}
                             onChange={this.handleInput}
                         />
                     </form>
@@ -72,8 +72,7 @@ class UpdateNoteDialog extends React.Component {
                         variant="contained"
                         onClick={async e => {
                             e.preventDefault();
-
-                            await updateNote(id, this.state.noteText);
+                            await updateProfile(this.state.username);
                             handleToggleUpdateDialog();
                         }}
                     >
@@ -85,4 +84,4 @@ class UpdateNoteDialog extends React.Component {
     }
 }
 
-export default UpdateNoteDialog;
+export default UpdateProfileDialog;

@@ -59,7 +59,7 @@ class SignIn extends React.Component {
             }
         };
         await this.props.signIn("http://localhost:5000/api/auth/login", body);
-        this.props.history.push("/app");
+        this.props.history.push("/app/mynotes");
     };
 
     render() {
@@ -136,17 +136,13 @@ class SignIn extends React.Component {
     }
 }
 
-const mapStateToProps = ({ token }) => ({
-    token
-});
-
 const mapDispatchToProps = dispatch => ({
     signIn: (url, body) => dispatch(userLogin(url, body))
 });
 
 export default withRouter(
     connect(
-        mapStateToProps,
+        null,
         mapDispatchToProps
     )(withStyles(useStyles)(SignIn))
 );

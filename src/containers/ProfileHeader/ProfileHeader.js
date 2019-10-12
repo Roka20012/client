@@ -19,6 +19,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import DraweSideList from "../../components/DrawerSideList";
 import { getNotes } from "../../actions/notes";
+import { getUser } from "../../actions/users";
 
 const useStyles = theme => ({
     root: {
@@ -82,17 +83,19 @@ class ProfileHeader extends React.Component {
         }));
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         const body = {
             headers: {
                 Authorization: localStorage.getItem("TOKEN")
             }
         };
-        this.props.getNotes("http://localhost:5000/api/notes/", body);
+        if (this.props.userNotes.length === 0)
+            await this.props.getNotes("http://localhost:5000/api/notes/", body);
+        if (!this.props.username) await this.props.getUser();
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, username, history } = this.props;
         return (
             <CssBaseline>
                 <div className={classes.root}>
@@ -119,6 +122,9 @@ class ProfileHeader extends React.Component {
                             <Typography variant="h6" className={classes.title}>
                                 Notes App
                             </Typography>
+                            <Typography variant="h6">
+                                {username ? username : "loading..."}
+                            </Typography>
                             <IconButton
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"
@@ -144,11 +150,13 @@ class ProfileHeader extends React.Component {
                                 open={this.state.open}
                                 onClose={this.handleClose}
                             >
-                                <MenuItem onClick={this.handleClose}>
+                                <MenuItem
+                                    onClick={() => {
+                                        this.handleClose();
+                                        history.push("profile");
+                                    }}
+                                >
                                     Profile
-                                </MenuItem>
-                                <MenuItem onClick={this.handleClose}>
-                                    My account
                                 </MenuItem>
                             </Menu>
                             <Button
@@ -167,12 +175,14 @@ class ProfileHeader extends React.Component {
     }
 }
 
-const mapStateToProps = ({ userNotes }) => ({
-    userNotes
+const mapStateToProps = ({ userNotes, user: { username } }) => ({
+    userNotes,
+    username
 });
 
 const mapDispatchToProps = dispatch => ({
-    getNotes: (url, body) => dispatch(getNotes(url, body))
+    getNotes: (url, body) => dispatch(getNotes(url, body)),
+    getUser: () => dispatch(getUser())
 });
 
 export default withRouter(

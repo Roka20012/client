@@ -1,6 +1,11 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch,
+    Redirect
+} from "react-router-dom";
 import "typeface-roboto";
 
 import configureStore from "./store/configureStore";
@@ -13,6 +18,8 @@ import Page404 from "./components/Page404";
 import ProtectedRoute from "./protected.route";
 import Notes from "./containers/Notes";
 import BottomAppBar from "./containers/BottomAppBar";
+import Users from "./containers/Users";
+import Profile from "./containers/Profile";
 
 import "./App.css";
 
@@ -44,11 +51,31 @@ function App() {
                             )}
                         />
                         <ProtectedRoute
-                            path="/app"
+                            path="/app/mynotes"
                             component={props => (
                                 <>
                                     <ProfileHeader />
                                     <Notes />
+                                    <BottomAppBar />
+                                </>
+                            )}
+                        />
+                        <ProtectedRoute
+                            path="/app/allusers"
+                            component={props => (
+                                <>
+                                    <ProfileHeader />
+                                    <Users />
+                                    <BottomAppBar />
+                                </>
+                            )}
+                        />
+                        <ProtectedRoute
+                            path="/app/profile"
+                            component={props => (
+                                <>
+                                    <ProfileHeader />
+                                    <Profile />
                                     <BottomAppBar />
                                 </>
                             )}

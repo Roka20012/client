@@ -1,12 +1,12 @@
 import { combineReducers } from "redux";
 
 import { notes } from "./notes";
-import { userLogin, userRegister } from "./auth";
 import { loaded } from "./loaded";
+import { user, users } from "./users";
 
 export default combineReducers({
     userNotes: notes,
-    token: userLogin,
-    user: userRegister,
+    user,
+    users,
     loaded
 });

@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import {
     List,
     Divider,
@@ -6,10 +7,10 @@ import {
     ListItemIcon,
     ListItemText
 } from "@material-ui/core";
-import AllInboxIcon from "@material-ui/icons/AllInbox";
 import ListAltIcon from "@material-ui/icons/ListAlt";
+import PeopleIcon from "@material-ui/icons/People";
 
-export default ({ toggleDrawer }) => (
+const DrawerSideList = ({ toggleDrawer, history }) => (
     <div
         role="presentation"
         style={{ width: 250 }}
@@ -17,27 +18,29 @@ export default ({ toggleDrawer }) => (
         onKeyDown={toggleDrawer}
     >
         <List>
-            {["My notes", "Create note", "Vies my notes", "Manage notes"].map(
-                (text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? (
-                                <AllInboxIcon />
-                            ) : (
-                                <ListAltIcon />
-                            )}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                )
-            )}
+            {["My notes"].map((text, index) => (
+                <ListItem
+                    button
+                    key={text}
+                    onClick={() => history.push("/app/mynotes")}
+                >
+                    <ListItemIcon>
+                        <ListAltIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                </ListItem>
+            ))}
         </List>
         <Divider />
         <List>
             {["All users"].map((text, index) => (
-                <ListItem button key={text}>
+                <ListItem
+                    button
+                    key={text}
+                    onClick={() => history.push("/app/allusers")}
+                >
                     <ListItemIcon>
-                        {index % 2 === 0 ? <AllInboxIcon /> : <ListAltIcon />}
+                        <PeopleIcon />
                     </ListItemIcon>
                     <ListItemText primary={text} />
                 </ListItem>
@@ -45,3 +48,5 @@ export default ({ toggleDrawer }) => (
         </List>
     </div>
 );
+
+export default withRouter(DrawerSideList);
