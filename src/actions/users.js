@@ -63,15 +63,11 @@ export const deleteProfile = () => async dispatch => {
         const headers = {
             Authorization: localStorage.getItem("TOKEN")
         };
-        const response = await axios.delete(
-            "http://localhost:5000/api/users/user",
-            {
-                headers
-            }
-        );
+        await axios.delete("http://localhost:5000/api/users/user", {
+            headers
+        });
 
-        console.log("response is", response);
-
+        localStorage.removeItem("TOKEN");
         // dispatch(loaded(true));
     } catch (err) {
         console.log("error", err);

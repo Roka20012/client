@@ -11,7 +11,9 @@ import {
     MenuItem,
     Menu,
     IconButton,
-    SwipeableDrawer
+    SwipeableDrawer,
+    Tooltip,
+    Zoom
 } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -89,9 +91,9 @@ class ProfileHeader extends React.Component {
                 Authorization: localStorage.getItem("TOKEN")
             }
         };
-        if (this.props.userNotes.length === 0)
-            await this.props.getNotes("http://localhost:5000/api/notes/", body);
-        if (!this.props.username) await this.props.getUser();
+
+        await this.props.getUser();
+        await this.props.getNotes("http://localhost:5000/api/notes/", body);
     }
 
     render() {
@@ -122,9 +124,21 @@ class ProfileHeader extends React.Component {
                             <Typography variant="h6" className={classes.title}>
                                 Notes App
                             </Typography>
-                            <Typography variant="h6">
-                                {username ? username : "loading..."}
-                            </Typography>
+                            <Tooltip
+                                title={
+                                    "Username: " +
+                                    (username ? username : "loading...")
+                                }
+                                TransitionComponent={Zoom}
+                            >
+                                <Typography variant="h6">
+                                    {username
+                                        ? username.length > 10
+                                            ? username.slice(0, 10) + "..."
+                                            : username
+                                        : "loading..."}
+                                </Typography>
+                            </Tooltip>
                             <IconButton
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"

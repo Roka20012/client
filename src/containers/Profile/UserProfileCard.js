@@ -51,14 +51,14 @@ class UserProfileCard extends React.Component {
                 <Card className={classes.card}>
                     <CardContent className={classes.cardContent} wrap="wrap">
                         <Grid>
-                            <Typography variant="h3" gutterBottom>
-                                Username: {username}
+                            <Typography variant="h4" gutterBottom>
+                                Username: {username ? username : "loading..."}
                             </Typography>
                         </Grid>
                     </CardContent>
                     <CardContent className={classes.cardContent} wrap="wrap">
                         <Grid>
-                            <Typography variant="h3" gutterBottom>
+                            <Typography variant="h4" gutterBottom>
                                 Notes count: {notesCount}
                             </Typography>
                         </Grid>

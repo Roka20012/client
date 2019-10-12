@@ -1,6 +1,6 @@
 import { LOADED } from "../constants";
 
-export const loaded = (state = true, { type, payload }) => {
+export const loaded = (state = false, { type, payload }) => {
     switch (type) {
         case LOADED:
             return payload.loaded;

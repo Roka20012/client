@@ -75,7 +75,9 @@ class Notes extends React.Component {
                         gutterBottom
                     >
                         You have{" "}
-                        {(loaded && notes.length) || (
+                        {loaded && notes.length >= 0 ? (
+                            notes.length
+                        ) : (
                             <CircularProgress className={classes.progress} />
                         )}{" "}
                         notes
@@ -118,7 +120,6 @@ class Notes extends React.Component {
                         text={this.state.text}
                     />
                 )}
-                />
             </>
         );
     }
