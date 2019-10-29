@@ -46,8 +46,8 @@ export const getNotes = () => async dispatch => {
 			headers: {
 				Authorization: localStorage.getItem('TOKEN')
 			}
-		};
-
+        };
+        
 		const response = await axios('http://localhost:5000/api/notes/', body);
 		const notes = response.data;
 		dispatch(getNotesSuccess(notes));

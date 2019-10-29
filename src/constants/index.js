@@ -15,3 +15,5 @@ export const CREATE_USER_NOTE = 'CREATE_USER_NOTE';
 export const LOADED = 'LOADED';
 export const ERROR = 'ERROR';
 
+export const SET_TIMER_ID = 'SET_TIMER_ID';
+export const RESET_TIMER = 'RESET_TIMER';
