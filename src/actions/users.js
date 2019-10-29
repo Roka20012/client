@@ -1,7 +1,7 @@
 import axios from "axios";
 import { loaded } from "./loaded";
 
-import { GET_USER, DELETE_USER, UPDATE_USER, GET_USERS } from "../constants";
+import { GET_USER, UPDATE_USER, GET_USERS } from "../constants";
 
 export const getUserSuccess = user => ({
     type: GET_USER,

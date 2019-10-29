@@ -3,8 +3,7 @@ import { Provider } from "react-redux";
 import {
     BrowserRouter as Router,
     Route,
-    Switch,
-    Redirect
+    Switch
 } from "react-router-dom";
 import "typeface-roboto";
 

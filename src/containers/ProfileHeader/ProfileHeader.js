@@ -20,6 +20,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import DraweSideList from "../../components/DrawerSideList";
+import Timer from '../../components/Timer';
 import { getNotes } from "../../actions/notes";
 import { getUser } from "../../actions/users";
 
@@ -86,14 +87,8 @@ class ProfileHeader extends React.Component {
     };
 
     async componentDidMount() {
-        const body = {
-            headers: {
-                Authorization: localStorage.getItem("TOKEN")
-            }
-        };
-
         await this.props.getUser();
-        await this.props.getNotes("http://localhost:5000/api/notes/", body);
+        await this.props.getNotes();
     }
 
     render() {
@@ -124,6 +119,7 @@ class ProfileHeader extends React.Component {
                             <Typography variant="h6" className={classes.title}>
                                 Notes App
                             </Typography>
+                            <Timer />
                             <Tooltip
                                 title={
                                     "Username: " +
